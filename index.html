@@ -97,6 +97,21 @@
     background:#fff;color:#222;border-radius:3px;overflow:hidden;white-space:nowrap}
   .run-input .type{border-right:2px solid #333;animation:blink 1s step-end infinite}
   @keyframes blink{50%{border-color:transparent}}
+  /* variant lure extras */
+  .variant-select{font-family:var(--font-body);font-size:12px;padding:6px 9px;border-radius:7px;
+    border:1px solid var(--ss-grey);color:var(--ss-purple);background:#fff;cursor:pointer;font-weight:700}
+  .lurebtn{background:var(--ss-orange);color:#fff;border:none;border-radius:8px;
+    padding:12px 22px;font-family:var(--font-body);font-weight:700;font-size:14px;cursor:pointer;
+    box-shadow:0 2px 6px rgba(240,125,0,.3)}
+  .lurebtn:hover{filter:brightness(.96)}
+  .lurebtn:disabled{opacity:.7;cursor:default}
+  .doc-ghost{margin:0 auto 18px;width:150px;height:94px;border:1px solid #ddd;border-radius:6px;
+    background:repeating-linear-gradient(#f4f4f4,#f4f4f4 7px,#fff 7px,#fff 15px);
+    filter:blur(1px);opacity:.65;position:relative}
+  .doc-ghost::after{content:"⚠";position:absolute;inset:0;display:flex;align-items:center;
+    justify-content:center;font-size:28px;color:var(--ss-red);filter:none;opacity:.85}
+  /* fake File Explorer address bar */
+  .exp-addr{display:flex;align-items:center;padding:9px 11px;background:#f7f7f7}
 
   /* ================= RIGHT : explainer ================= */
   .expl-intro{font-size:13px;color:#555;margin-bottom:16px}
@@ -160,7 +175,7 @@
 <div class="train-banner">🎓 SECURITY AWARENESS TRAINING — SIMULATION ONLY &nbsp;<span>Nothing on this page runs any real command. Built for phishing-awareness training.</span></div>
 
 <header class="brand">
-  <div class="logo">Sopra<b>Steria</b> <span style="color:var(--ss-black);font-weight:400">| ClickFix Awareness</span></div>
+  <div class="logo"><img src="data:image/png;base64,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" alt="Sopra Steria" style="height:30px;vertical-align:middle"> <span style="color:var(--ss-black);font-weight:400;font-size:16px">| ClickFix Awareness</span></div>
   <div class="sub">Anti-phishing exercise · v1.0</div>
 </header>
 
@@ -168,44 +183,24 @@
 
   <!-- ============ LEFT: THE LURE ============ -->
   <div class="card">
-    <div class="card-h"><span class="chip attacker">WHAT THE VICTIM SEES</span><h2>The fake "verify you're human" page</h2></div>
+    <div class="card-h" style="justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:10px;min-width:0">
+        <span class="chip attacker">WHAT THE VICTIM SEES</span>
+        <h2 id="lureTitle" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></h2>
+      </div>
+      <select class="variant-select" id="variant" onchange="switchVariant()" title="Switch the ClickFix lure variant">
+        <option value="captcha">Lure: Fake CAPTCHA</option>
+        <option value="document">Lure: Fake document</option>
+        <option value="filefix">Lure: FileFix (Explorer)</option>
+      </select>
+    </div>
     <div class="card-body">
       <div class="fake-browser">
         <div class="fake-url">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="bar"><span class="lock">⚠</span> http://verify-human-check<b style="color:#cf022b">-secure</b>.com/challenge</span>
+          <span class="bar"><span class="lock">⚠</span> <span id="lureUrl"></span></span>
         </div>
-        <div class="fake-page">
-          <h3>Verify you are human</h3>
-          <p class="muted">Complete the action below to confirm you are not a robot and continue to the document.</p>
-
-          <div class="captcha" id="captcha" onclick="clickCaptcha()">
-            <div class="cbox"><div class="spin" id="spin"></div></div>
-            <span class="lbl" id="clbl">I'm not a robot</span>
-            <span class="cf">Verify<br>Privacy · Terms</span>
-          </div>
-
-          <div class="verify-steps" id="steps">
-            <div class="warn">⚠ Verification failed — additional step required</div>
-            <div class="vstep"><div class="vnum">1</div><div>Press <code>Windows + R</code> on your keyboard to open the Run window.</div></div>
-            <div class="vstep"><div class="vnum">2</div><div>Press <code>Ctrl + V</code> to paste the verification code.</div></div>
-            <div class="vstep"><div class="vnum">3</div><div>Press <code>Enter</code> to finish verification.</div></div>
-            <button class="copybtn" onclick="fakeCopy()">📋 Copy verification code</button>
-            <div class="copied-note" id="copied">✓ "Verification code" copied — but this actually placed a hidden instruction on your clipboard that you can't see!</div>
-
-            <div class="run-dialog" id="rundlg">
-              <div class="run-title"><span>Run</span><span>✕</span></div>
-              <div class="run-body">
-                <div class="ricon">⌘</div>
-                <div style="flex:1">
-                  <div style="margin-bottom:6px;color:#333">Type the name of a program, and Windows will open it for you.</div>
-                  <div class="run-input"><span id="typed"></span><span class="type"></span></div>
-                </div>
-              </div>
-            </div>
-            <p class="inert-note" id="inertnote"></p>
-          </div>
-        </div>
+        <div class="fake-page" id="lure"></div>
       </div>
     </div>
     <div class="controls">
@@ -246,7 +241,7 @@
 
       <div class="stage" data-s="2"><div class="sn">3</div>
         <h4>You paste and press Enter yourself</h4>
-        <p>The steps have you paste that hidden instruction into a small Windows tool and press Enter. Because you ran it, your computer treats it as something you meant to do — so it doesn't warn you.</p>
+        <p id="stage3p">The steps have you paste that hidden instruction into a small Windows tool and press Enter. Because you ran it, your computer treats it as something you meant to do — so it doesn't warn you.</p>
         <span class="tag">You do the attacker's work</span></div>
 
       <div class="stage" data-s="3"><div class="sn">4</div>
@@ -284,51 +279,155 @@
 <footer class="foot">Sopra Steria — Security Awareness Training. This is a harmless simulation for educational use only; it executes no commands and contacts no servers.</footer>
 
 <script>
-  // The "command" shown is intentionally INERT — a labelled placeholder that does nothing.
+  // The strings shown are intentionally INERT — labelled placeholders that do nothing.
   const INERT_COMMAND = '[ hidden instruction ]  — SIMULATION ONLY, this does nothing.  "This was a ClickFix phishing test"';
+  const TYPED_TEXT    = '[ hidden instruction that quietly downloads harmful software ]   ⟵ simulation only, does nothing';
+
   const stages = [...document.querySelectorAll('.stage')];
   const nodes  = [...document.querySelectorAll('.node')];
   const chevs  = [...document.querySelectorAll('.chev')];
   let autoTimers = [];
+  let cur = 'captcha';
+
+  // Each variant = a different ClickFix cover story / execution surface.
+  const VARIANTS = {
+    captcha:{
+      title:'The fake "verify you\'re human" page',
+      url:'http://verify-human-check<b style="color:#cf022b">-secure</b>.com/challenge',
+      heading:'Verify you are human',
+      sub:'Complete the action below to confirm you are not a robot and continue to the document.',
+      captcha:true,
+      warn:'⚠ Verification failed — additional step required',
+      steps:['Press <code>Windows + R</code> to open the Run window.',
+             'Press <code>Ctrl + V</code> to paste the verification code.',
+             'Press <code>Enter</code> to finish verification.'],
+      copyLabel:'📋 Copy verification code',
+      copied:'✓ "Verification code" copied — but this actually placed a hidden instruction on your clipboard that you can\'t see!',
+      dialog:'run', surface:'the Windows Run box'
+    },
+    document:{
+      title:'The fake "document won\'t open" page',
+      url:'http://secure-docs-viewer<b style="color:#cf022b">-online</b>.com/view?id=INV-8842',
+      heading:'This document could not be displayed',
+      sub:'“Invoice_8842.pdf” is protected. Repair the viewer to open it.',
+      button:'🔧 Fix &amp; open document', ghost:true,
+      warn:'⚠ Viewer error 0x004 — manual repair required',
+      steps:['Press <code>Windows + R</code> to open the Run window.',
+             'Press <code>Ctrl + V</code> to paste the repair code.',
+             'Press <code>Enter</code> to repair and open the document.'],
+      copyLabel:'📋 Copy repair code',
+      copied:'✓ "Repair code" copied — but this actually placed a hidden instruction on your clipboard that you can\'t see!',
+      dialog:'run', surface:'the Windows Run box'
+    },
+    filefix:{
+      title:'The fake "open shared file" page (FileFix)',
+      url:'http://company-fileshare<b style="color:#cf022b">-secure</b>.com/shared/Q3-report',
+      heading:'A file has been shared with you',
+      sub:'For security this file must be opened in File Explorer. Follow the steps to open “Q3-report.docx”.',
+      button:'📂 Open in File Explorer',
+      warn:'⚠ Direct download blocked — open manually in File Explorer',
+      steps:['Press <code>Windows + E</code> to open File Explorer.',
+             'Click the address bar, then press <code>Ctrl + V</code> to paste the file path.',
+             'Press <code>Enter</code> to open the file.'],
+      copyLabel:'📋 Copy file path',
+      copied:'✓ "File path" copied — but this actually placed a hidden instruction on your clipboard that you can\'t see!',
+      dialog:'explorer', surface:'the File Explorer address bar'
+    }
+  };
 
   function litUpTo(n){
     stages.forEach((s,i)=>{ s.classList.toggle('active',i===n); s.classList.toggle('done',i<n); });
     nodes.forEach((nd,i)=> nd.classList.toggle('lit', i<=n));
-    // a chevron points to the step it leads into; show it once that step is reached,
-    // and keep only the newest one pulsing as the "we're moving forward" cue
     chevs.forEach(c=>{ const t=+c.dataset.c; c.classList.toggle('lit', t<=n); });
   }
 
-  function clickCaptcha(){
-    const spin=document.getElementById('spin');
-    spin.style.display='block';
-    document.getElementById('clbl').textContent='Verifying…';
+  function dialogHTML(v){
+    if(v.dialog==='explorer'){
+      return `<div class="run-dialog" id="rundlg">
+        <div class="run-title"><span>📁 File Explorer</span><span>—  ▢  ✕</span></div>
+        <div class="exp-addr"><span style="margin-right:6px">📁</span>
+          <div class="run-input" style="flex:1"><span id="typed"></span><span class="type"></span></div>
+          <span style="margin-left:8px;color:#888">🔍</span></div></div>`;
+    }
+    return `<div class="run-dialog" id="rundlg">
+      <div class="run-title"><span>Run</span><span>✕</span></div>
+      <div class="run-body"><div class="ricon">⌘</div>
+        <div style="flex:1">
+          <div style="margin-bottom:6px;color:#333">Type the name of a program, and Windows will open it for you.</div>
+          <div class="run-input"><span id="typed"></span><span class="type"></span></div>
+        </div></div></div>`;
+  }
+
+  function triggerHTML(v){
+    if(v.captcha){
+      return `<div class="captcha" id="trigger" onclick="triggerAction()">
+        <div class="cbox"><div class="spin" id="spin"></div></div>
+        <span class="lbl" id="clbl">I'm not a robot</span>
+        <span class="cf">Verify<br>Privacy · Terms</span></div>`;
+    }
+    return (v.ghost?'<div class="doc-ghost"></div>':'')+
+      `<button class="lurebtn" id="trigger" onclick="triggerAction()">${v.button}</button>`;
+  }
+
+  function renderLure(){
+    const v=VARIANTS[cur];
+    document.getElementById('lureTitle').innerHTML=v.title;
+    document.getElementById('lureUrl').innerHTML=v.url;
+    const steps=v.steps.map((s,i)=>`<div class="vstep"><div class="vnum">${i+1}</div><div>${s}</div></div>`).join('');
+    document.getElementById('lure').innerHTML=`
+      <h3>${v.heading}</h3>
+      <p class="muted">${v.sub}</p>
+      ${triggerHTML(v)}
+      <div class="verify-steps" id="steps">
+        <div class="warn">${v.warn}</div>
+        ${steps}
+        <button class="copybtn" onclick="fakeCopy()">${v.copyLabel}</button>
+        <div class="copied-note" id="copied">${v.copied}</div>
+        ${dialogHTML(v)}
+        <p class="inert-note" id="inertnote"></p>
+      </div>`;
+    document.getElementById('stage3p').innerHTML =
+      `The steps have you paste that hidden instruction into <b>${v.surface}</b> and press Enter. `+
+      `Because you ran it, your computer treats it as something you meant to do — so it doesn't warn you.`;
+  }
+
+  function switchVariant(){ cur=document.getElementById('variant').value; resetSim(); }
+
+  function triggerAction(){
+    const v=VARIANTS[cur];
     litUpTo(0);
-    setTimeout(()=>{
-      spin.style.display='none';
-      document.getElementById('clbl').textContent='Verification failed';
-      document.getElementById('steps').classList.add('show');
-    },1100);
+    if(v.captcha){
+      const spin=document.getElementById('spin');
+      spin.style.display='block';
+      document.getElementById('clbl').textContent='Verifying…';
+      autoTimers.push(setTimeout(()=>{
+        spin.style.display='none';
+        document.getElementById('clbl').textContent='Verification failed';
+        document.getElementById('steps').classList.add('show');
+      },1100));
+    }else{
+      const b=document.getElementById('trigger'); const orig=b.innerHTML;
+      b.innerHTML='Working…'; b.disabled=true;
+      autoTimers.push(setTimeout(()=>{
+        b.innerHTML=orig; b.disabled=false;
+        document.getElementById('steps').classList.add('show');
+      },900));
+    }
   }
 
   function fakeCopy(){
-    // Copy the clearly-inert placeholder so trainees can inspect it safely.
     try{ navigator.clipboard && navigator.clipboard.writeText(INERT_COMMAND); }catch(e){}
     document.getElementById('copied').classList.add('show');
-    document.getElementById('inertnote').textContent =
-      'On your clipboard now: '+INERT_COMMAND;
+    document.getElementById('inertnote').textContent='On your clipboard now: '+INERT_COMMAND;
     litUpTo(1);
   }
 
-  // Type-out effect in the fake Run box
-  function typeRun(cb){
-    const dlg=document.getElementById('rundlg'); dlg.classList.add('show');
-    const el=document.getElementById('typed');
-    const text='[ hidden instruction that quietly downloads harmful software ]   ⟵ simulation only, does nothing';
-    el.textContent=''; let i=0;
+  function typeDialog(cb){
+    document.getElementById('rundlg').classList.add('show');
+    const el=document.getElementById('typed'); el.textContent=''; let i=0;
     const t=setInterval(()=>{
-      el.textContent=text.slice(0,++i);
-      if(i>=text.length){clearInterval(t); cb&&cb();}
+      el.textContent=TYPED_TEXT.slice(0,++i);
+      if(i>=TYPED_TEXT.length){clearInterval(t); cb&&cb();}
     },35);
   }
 
@@ -336,28 +435,23 @@
     resetSim();
     const at=(fn,ms)=>autoTimers.push(setTimeout(fn,ms));
     litUpTo(0);                                  // 1 fake page
-    at(()=>{ clickCaptcha(); },600);
-    at(()=>{ fakeCopy(); },2200);                // 2 hidden copy
-    at(()=>{ litUpTo(2); typeRun(); },3400);     // 3 you paste it
-    at(()=>{ litUpTo(3); },7000);                // 4 secret command
-    at(()=>{ litUpTo(4); },8600);                // 5 attacker's site
-    at(()=>{ litUpTo(5); },10200);               // 6 harm done
+    at(triggerAction,600);
+    at(fakeCopy,2200);                           // 2 hidden copy
+    at(()=>{ litUpTo(2); typeDialog(); },3400);  // 3 you paste it
+    at(()=>litUpTo(3),7000);                     // 4 secret command
+    at(()=>litUpTo(4),8600);                     // 5 attacker's site
+    at(()=>litUpTo(5),10200);                    // 6 harm done
   }
 
   function resetSim(){
     autoTimers.forEach(clearTimeout); autoTimers=[];
-    document.getElementById('steps').classList.remove('show');
-    document.getElementById('copied').classList.remove('show');
-    document.getElementById('rundlg').classList.remove('show');
-    document.getElementById('inertnote').textContent='';
-    document.getElementById('spin').style.display='none';
-    document.getElementById('clbl').textContent="I'm not a robot";
     stages.forEach(s=>s.classList.remove('active','done'));
     nodes.forEach(n=>n.classList.remove('lit'));
     chevs.forEach(c=>c.classList.remove('lit'));
+    renderLure();   // rebuilds the lure region fresh (steps & dialog hidden again)
   }
 
-  // clicking through manually also advances stages
+  renderLure();
   litUpTo(-1);
 </script>
 </body>
