@@ -36,7 +36,8 @@
   .card-h{padding:14px 20px;border-bottom:1px solid var(--ss-light-grey);
     display:flex;align-items:center;gap:10px}
   .card-h h2{font-family:var(--font-heading);font-size:16px;color:var(--ss-purple)}
-  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff}
+  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff;
+    white-space:nowrap;flex:none}
   .chip.attacker{background:var(--ss-red)}
   .chip.defender{background:var(--ss-purple)}
   .card-body{padding:22px}
@@ -216,6 +217,8 @@
   .fb.no{background:#fdecef;color:var(--ss-red);border-left:4px solid var(--ss-red)}
   .score{margin-top:4px;font-size:13.5px;font-weight:700;color:var(--ss-purple)}
   .fac{font-size:10px;color:var(--ss-grey);font-weight:700;letter-spacing:.3px}
+  .controls .fac{margin-left:auto}
+  @media(max-width:560px){.controls .fac{margin-left:0}}
 
   /* red-flags / lesson section */
   .flags{max-width:1240px;margin:4px auto 40px;padding:0 20px}
@@ -263,18 +266,9 @@
 
   <!-- ============ LEFT: THE LURE ============ -->
   <div class="card">
-    <div class="card-h" style="justify-content:space-between">
-      <div style="display:flex;align-items:center;gap:10px;min-width:0">
-        <span class="chip attacker">WHAT YOU SEE</span>
-        <h2 id="lureTitle" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></h2>
-      </div>
-      <span class="fac">FACILITATOR</span>
-      <select class="variant-select" id="variant" onchange="switchVariant()" title="Facilitator control: demo any lure variant in full">
-        <option value="captcha">Lure: Fake CAPTCHA</option>
-        <option value="document">Lure: Fake document</option>
-        <option value="filefix">Lure: FileFix (Explorer)</option>
-        <option value="shared">Lure: External shared file</option>
-      </select>
+    <div class="card-h">
+      <span class="chip attacker">WHAT YOU SEE</span>
+      <h2 id="lureTitle"></h2>
     </div>
     <div class="card-body">
       <div class="fake-browser">
@@ -289,6 +283,13 @@
       <button class="btn primary" onclick="autoRun()">▶ Play attack step-by-step</button>
       <button class="btn ghost" onclick="resetSim()">↺ Reset</button>
       <button class="btn ghost" onclick="showLesson()">🚩 Show the lesson</button>
+      <span class="fac">FACILITATOR</span>
+      <select class="variant-select" id="variant" onchange="switchVariant()" title="Facilitator control: demo any lure variant in full">
+        <option value="captcha">Lure: Fake CAPTCHA</option>
+        <option value="document">Lure: Fake document</option>
+        <option value="filefix">Lure: FileFix (Explorer)</option>
+        <option value="shared">Lure: External shared file</option>
+      </select>
     </div>
   </div>
 
