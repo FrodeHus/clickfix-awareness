@@ -1,0 +1,43 @@
+# ClickFix Awareness Training
+
+An interactive, browser-based security-awareness exercise that teaches people to recognise and stop **ClickFix** phishing attacks. Built for Sopra Steria client training.
+
+**Live page:** https://frodehus.github.io/clickfix-awareness/
+
+## What is ClickFix?
+
+ClickFix is a social-engineering technique where a fake web page (often a "verify you're human" check or a "document won't open" error) convinces the victim to copy a hidden instruction and paste it into the Windows **Run** box themselves. Because the victim runs the command, no download warning appears and the usual browser protections are bypassed — leading to malware, data theft or ransomware.
+
+## What this page does
+
+The page shows the attack from two sides at once:
+
+- **Left — what the victim sees:** a realistic fake "verify you're human" CAPTCHA that, once clicked, presents the classic ClickFix steps (Win+R → Ctrl+V → Enter).
+- **Right — what really happens:** a synced, animated six-step explainer written in plain, non-technical language, showing how the trick moves from fake page to full compromise.
+- A **"Play attack step-by-step"** button auto-runs the whole sequence for a facilitator, and a red-flags / how-to-respond section supports the debrief.
+
+## Safety
+
+This is a **harmless simulation for education only**. Nothing on the page runs any command or contacts any server:
+
+- The "copied" command is a clearly labelled placeholder that does nothing.
+- There are no network calls, downloads, or real clipboard payloads.
+- A prominent banner marks the page as a training simulation throughout.
+
+## Files
+
+- `index.html` — the complete, self-contained training page (all HTML, CSS and JavaScript in one file; no build step or dependencies).
+
+## Running it
+
+Open `index.html` in any modern browser — locally, from a shared drive, or hosted. It is already deployed via **GitHub Pages** from the `main` branch at the link above.
+
+To host elsewhere, just serve the single file; no server-side code is required.
+
+## Using it in a session
+
+For a sanctioned phishing exercise, keep the page behind access control (intranet / SharePoint / link-with-password) rather than a fully public URL, and always brief participants afterwards so the exercise lands as learning rather than blame. No one should be penalised for falling for it or for reporting it.
+
+---
+
+*Sopra Steria — Security Awareness Training.*
