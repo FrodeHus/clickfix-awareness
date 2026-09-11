@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ClickFix Awareness Simulation — Sopra Steria</title>
+<style>
+  :root{
+    --ss-purple:#4d1d82; --ss-dark-purple:#2A1449; --ss-bg-purple:#ede9f2;
+    --ss-bg-beige:#fdf2e5; --ss-black:#1d1d1b; --ss-warm-purple:#8b1d82;
+    --ss-orange:#f07d00; --ss-red:#cf022b; --ss-grey:#a8a8a7; --ss-light-grey:#ededed;
+    --font-heading:'Hurme Geometric Sans 4',Tahoma,Arial,sans-serif;
+    --font-body:'Hurme Geometric Sans 3',Tahoma,Arial,sans-serif;
+    --ss-gradient:linear-gradient(90deg,#4d1d82 0%,#8b1d82 10%,#cf022b 60%,#f07d00 100%);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font-body);color:var(--ss-black);background:#f4f2f7;line-height:1.5}
+
+  /* ---- Training banner ---- */
+  .train-banner{background:var(--ss-gradient);color:#fff;text-align:center;
+    padding:10px 16px;font-weight:700;letter-spacing:.3px;font-size:14px}
+  .train-banner span{opacity:.92;font-weight:400}
+
+  header.brand{display:flex;align-items:center;justify-content:space-between;
+    padding:14px 28px;background:#fff;border-bottom:1px solid var(--ss-light-grey)}
+  .brand .logo{font-family:var(--font-heading);font-weight:700;font-size:20px;color:var(--ss-purple)}
+  .brand .logo b{color:var(--ss-orange)}
+  .brand .sub{font-size:12px;color:var(--ss-grey)}
+
+  .wrap{max-width:1240px;margin:22px auto;padding:0 20px;
+    display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
+  @media(max-width:960px){.wrap{grid-template-columns:1fr}}
+
+  .card{background:#fff;border:1px solid var(--ss-light-grey);border-radius:14px;
+    box-shadow:0 4px 18px rgba(42,20,73,.06);overflow:hidden}
+  .card-h{padding:14px 20px;border-bottom:1px solid var(--ss-light-grey);
+    display:flex;align-items:center;gap:10px}
+  .card-h h2{font-family:var(--font-heading);font-size:16px;color:var(--ss-purple)}
+  .chip{font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;color:#fff}
+  .chip.attacker{background:var(--ss-red)}
+  .chip.defender{background:var(--ss-purple)}
+  .card-body{padding:22px}
+
+  /* ================= LEFT : the fake lure ================= */
+  .fake-browser{border:1px solid var(--ss-grey);border-radius:10px;overflow:hidden;background:#fff}
+  .fake-url{display:flex;align-items:center;gap:8px;background:#eceaf0;padding:8px 12px;
+    font-size:12px;color:#555;border-bottom:1px solid var(--ss-grey)}
+  .fake-url .dot{width:10px;height:10px;border-radius:50%;background:#c9c7cd}
+  .fake-url .bar{flex:1;background:#fff;border-radius:6px;padding:5px 10px;color:#888;
+    font-family:monospace;border:1px solid #ddd;display:flex;align-items:center;gap:6px}
+  .fake-url .bar .lock{color:var(--ss-red);font-weight:700}
+  .fake-page{padding:34px 26px;text-align:center;min-height:300px}
+  .fake-page h3{font-size:19px;margin-bottom:6px;color:#222}
+  .fake-page p.muted{color:#777;font-size:13px;margin-bottom:22px}
+
+  .captcha{display:inline-flex;align-items:center;gap:14px;border:1px solid #d0d0d0;
+    border-radius:8px;padding:14px 18px;background:#f9f9f9;cursor:pointer;user-select:none;
+    box-shadow:0 1px 3px rgba(0,0,0,.08);transition:.15s}
+  .captcha:hover{background:#f2f2f2}
+  .cbox{width:26px;height:26px;border:2px solid #b7b7b7;border-radius:5px;background:#fff;
+    display:flex;align-items:center;justify-content:center}
+  .cbox .spin{width:16px;height:16px;border:2px solid var(--ss-orange);border-top-color:transparent;
+    border-radius:50%;animation:spin .7s linear infinite;display:none}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  .captcha .lbl{font-size:14px;color:#333}
+  .captcha .cf{margin-left:6px;font-size:10px;color:#999;text-align:right;line-height:1.2}
+
+  .verify-steps{display:none;margin-top:20px;text-align:left;
+    background:#fff;border:1px solid #e2e2e2;border-radius:10px;padding:18px}
+  .verify-steps.show{display:block;animation:fadeUp .4s ease}
+  @keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+  .verify-steps .warn{color:var(--ss-red);font-weight:700;font-size:13px;margin-bottom:12px;
+    display:flex;align-items:center;gap:6px}
+  .vstep{display:flex;gap:12px;align-items:flex-start;padding:9px 0;border-bottom:1px dashed #eee}
+  .vstep:last-child{border-bottom:none}
+  .vnum{flex:none;width:24px;height:24px;border-radius:50%;background:var(--ss-black);color:#fff;
+    font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .vstep code{background:#f0eef4;border:1px solid #ddd;border-radius:4px;padding:1px 7px;
+    font-family:monospace;font-size:13px;color:var(--ss-purple)}
+  .copybtn{margin-top:14px;background:var(--ss-purple);color:#fff;border:none;border-radius:7px;
+    padding:10px 16px;font-family:var(--font-body);font-weight:700;font-size:13px;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px}
+  .copybtn:hover{background:var(--ss-warm-purple)}
+  .copied-note{display:none;margin-top:10px;font-size:12px;color:var(--ss-red);font-weight:700}
+  .copied-note.show{display:block}
+
+  /* fake Run dialog */
+  .run-dialog{display:none;margin-top:20px;background:#f0f0f0;border:1px solid #999;
+    border-radius:6px;box-shadow:0 8px 30px rgba(0,0,0,.25);text-align:left;overflow:hidden}
+  .run-dialog.show{display:block;animation:fadeUp .35s ease}
+  .run-title{background:linear-gradient(#4a4a4a,#3a3a3a);color:#fff;font-size:12px;
+    padding:6px 10px;display:flex;justify-content:space-between}
+  .run-body{padding:14px;display:flex;gap:12px;align-items:center;font-size:12px}
+  .run-body .ricon{width:34px;height:34px;border-radius:6px;background:var(--ss-purple);
+    color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px}
+  .run-input{flex:1;border:1px solid #7a9bc4;padding:6px 8px;font-family:monospace;font-size:12px;
+    background:#fff;color:#222;border-radius:3px;overflow:hidden;white-space:nowrap}
+  .run-input .type{border-right:2px solid #333;animation:blink 1s step-end infinite}
+  @keyframes blink{50%{border-color:transparent}}
+
+  /* ================= RIGHT : explainer ================= */
+  .expl-intro{font-size:13px;color:#555;margin-bottom:16px}
+  .stage{position:relative;padding:16px 16px 16px 54px;border-radius:11px;margin-bottom:12px;
+    border:1px solid var(--ss-light-grey);background:#fbfafc;opacity:.5;transition:.4s}
+  .stage.active{opacity:1;border-color:var(--ss-orange);background:#fff;
+    box-shadow:0 6px 18px rgba(240,125,0,.14)}
+  .stage.done{opacity:1}
+  .stage .sn{position:absolute;left:14px;top:16px;width:28px;height:28px;border-radius:50%;
+    background:var(--ss-grey);color:#fff;font-weight:700;font-size:13px;
+    display:flex;align-items:center;justify-content:center;transition:.4s}
+  .stage.active .sn{background:var(--ss-orange);animation:pulse 1.4s infinite}
+  .stage.done .sn{background:var(--ss-purple)}
+  @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,125,0,.5)}50%{box-shadow:0 0 0 8px rgba(240,125,0,0)}}
+  .stage h4{font-family:var(--font-heading);font-size:14px;color:var(--ss-purple);margin-bottom:4px}
+  .stage p{font-size:12.5px;color:#444}
+  .stage .tag{display:inline-block;margin-top:7px;font-size:10.5px;font-weight:700;
+    background:var(--ss-bg-beige);color:var(--ss-red);padding:2px 8px;border-radius:12px}
+
+  /* animated attack-flow diagram */
+  .flow{margin:6px 0 18px;padding:16px 10px;background:var(--ss-dark-purple);border-radius:12px;
+    display:flex;align-items:flex-start;justify-content:space-between}
+  .node{flex:1;text-align:center;color:#fff;font-size:10.5px}
+  .node .ic{width:46px;height:46px;margin:0 auto 6px;border-radius:10px;background:rgba(255,255,255,.1);
+    border:1px solid rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;
+    font-size:20px;transition:.35s}
+  .node.lit .ic{background:var(--ss-dark-purple);border-color:var(--ss-orange);
+    box-shadow:0 0 16px rgba(240,125,0,.7);transform:scale(1.08)}
+  .node.lit{color:var(--ss-orange)}
+  /* right-facing chevron between steps */
+  .chev{flex:none;width:22px;align-self:center;margin-top:-18px;text-align:center;
+    color:var(--ss-orange);font-size:22px;font-weight:700;line-height:1;
+    opacity:0;transform:translateX(-6px);transition:opacity .35s ease,transform .35s ease}
+  .chev.lit{opacity:1;transform:translateX(0)}
+
+  .controls{padding:16px 22px;border-top:1px solid var(--ss-light-grey);
+    display:flex;gap:10px;flex-wrap:wrap;align-items:center;background:#fbfafc}
+  .btn{border:none;border-radius:8px;padding:9px 16px;font-family:var(--font-body);font-weight:700;
+    font-size:13px;cursor:pointer}
+  .btn.primary{background:var(--ss-orange);color:#fff}
+  .btn.ghost{background:#fff;border:1px solid var(--ss-grey);color:var(--ss-purple)}
+  .btn:hover{filter:brightness(.95)}
+
+  /* red-flags footer */
+  .flags{max-width:1240px;margin:4px auto 40px;padding:0 20px}
+  .flags-inner{background:var(--ss-bg-purple);border-radius:14px;padding:24px 26px}
+  .flags-inner h3{font-family:var(--font-heading);color:var(--ss-purple);margin-bottom:14px;font-size:17px}
+  .flag-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+  .flag{background:#fff;border-radius:10px;padding:14px 16px;border-left:4px solid var(--ss-red)}
+  .flag b{color:var(--ss-red);font-size:13px}
+  .flag p{font-size:12.5px;color:#444;margin-top:3px}
+  .safe{margin-top:16px;background:#fff;border-left:4px solid var(--ss-purple);border-radius:10px;padding:14px 16px}
+  .safe b{color:var(--ss-purple)}
+  footer.foot{text-align:center;color:var(--ss-grey);font-size:11.5px;padding:0 20px 40px}
+
+  .inert-note{font-size:11px;color:var(--ss-grey);margin-top:10px;font-style:italic}
+</style>
+</head>
+<body>
+
+<div class="train-banner">🎓 SECURITY AWARENESS TRAINING — SIMULATION ONLY &nbsp;<span>Nothing on this page runs any real command. Built for phishing-awareness training.</span></div>
+
+<header class="brand">
+  <div class="logo">Sopra<b>Steria</b> <span style="color:var(--ss-black);font-weight:400">| ClickFix Awareness</span></div>
+  <div class="sub">Anti-phishing exercise · v1.0</div>
+</header>
+
+<div class="wrap">
+
+  <!-- ============ LEFT: THE LURE ============ -->
+  <div class="card">
+    <div class="card-h"><span class="chip attacker">WHAT THE VICTIM SEES</span><h2>The fake "verify you're human" page</h2></div>
+    <div class="card-body">
+      <div class="fake-browser">
+        <div class="fake-url">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span class="bar"><span class="lock">⚠</span> http://verify-human-check<b style="color:#cf022b">-secure</b>.com/challenge</span>
+        </div>
+        <div class="fake-page">
+          <h3>Verify you are human</h3>
+          <p class="muted">Complete the action below to confirm you are not a robot and continue to the document.</p>
+
+          <div class="captcha" id="captcha" onclick="clickCaptcha()">
+            <div class="cbox"><div class="spin" id="spin"></div></div>
+            <span class="lbl" id="clbl">I'm not a robot</span>
+            <span class="cf">Verify<br>Privacy · Terms</span>
+          </div>
+
+          <div class="verify-steps" id="steps">
+            <div class="warn">⚠ Verification failed — additional step required</div>
+            <div class="vstep"><div class="vnum">1</div><div>Press <code>Windows + R</code> on your keyboard to open the Run window.</div></div>
+            <div class="vstep"><div class="vnum">2</div><div>Press <code>Ctrl + V</code> to paste the verification code.</div></div>
+            <div class="vstep"><div class="vnum">3</div><div>Press <code>Enter</code> to finish verification.</div></div>
+            <button class="copybtn" onclick="fakeCopy()">📋 Copy verification code</button>
+            <div class="copied-note" id="copied">✓ "Verification code" copied — but this actually placed a hidden instruction on your clipboard that you can't see!</div>
+
+            <div class="run-dialog" id="rundlg">
+              <div class="run-title"><span>Run</span><span>✕</span></div>
+              <div class="run-body">
+                <div class="ricon">⌘</div>
+                <div style="flex:1">
+                  <div style="margin-bottom:6px;color:#333">Type the name of a program, and Windows will open it for you.</div>
+                  <div class="run-input"><span id="typed"></span><span class="type"></span></div>
+                </div>
+              </div>
+            </div>
+            <p class="inert-note" id="inertnote"></p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="controls">
+      <button class="btn primary" onclick="autoRun()">▶ Play attack step-by-step</button>
+      <button class="btn ghost" onclick="resetSim()">↺ Reset</button>
+    </div>
+  </div>
+
+  <!-- ============ RIGHT: EXPLAINER ============ -->
+  <div class="card">
+    <div class="card-h"><span class="chip defender">WHAT REALLY HAPPENS</span><h2>Behind the scenes of a ClickFix attack</h2></div>
+    <div class="card-body">
+      <p class="expl-intro"><b>ClickFix</b> tricks you into running the attacker's instructions <i>yourself</i>. Because <b>you</b> type them in, your computer trusts the action and none of the usual "are you sure?" warnings appear. Watch each step light up as the trick unfolds.</p>
+
+      <div class="flow" id="flow">
+        <div class="node" data-n="0"><div class="ic">🕸️</div>Fake page</div>
+        <div class="chev" data-c="1">❯</div>
+        <div class="node" data-n="1"><div class="ic">📋</div>Hidden copy</div>
+        <div class="chev" data-c="2">❯</div>
+        <div class="node" data-n="2"><div class="ic">⌨️</div>You paste it</div>
+        <div class="chev" data-c="3">❯</div>
+        <div class="node" data-n="3"><div class="ic">⚡</div>Secret command</div>
+        <div class="chev" data-c="4">❯</div>
+        <div class="node" data-n="4"><div class="ic">🌐</div>Attacker's site</div>
+        <div class="chev" data-c="5">❯</div>
+        <div class="node" data-n="5"><div class="ic">💀</div>Harm done</div>
+      </div>
+
+      <div class="stage" data-s="0"><div class="sn">1</div>
+        <h4>The trap: a fake "prove you're human" check</h4>
+        <p>A convincing page that looks like a normal security check or a document that "won't open". Its only real job is to get you to follow the steps without stopping to think.</p>
+        <span class="tag">A believable trick</span></div>
+
+      <div class="stage" data-s="1"><div class="sn">2</div>
+        <h4>A hidden instruction is copied for you</h4>
+        <p>When you click the button, it quietly copies a hidden instruction onto your clipboard — not the harmless "code" you were told it would copy. You never see what was really copied.</p>
+        <span class="tag">Sleight of hand</span></div>
+
+      <div class="stage" data-s="2"><div class="sn">3</div>
+        <h4>You paste and press Enter yourself</h4>
+        <p>The steps have you paste that hidden instruction into a small Windows tool and press Enter. Because you ran it, your computer treats it as something you meant to do — so it doesn't warn you.</p>
+        <span class="tag">You do the attacker's work</span></div>
+
+      <div class="stage" data-s="3"><div class="sn">4</div>
+        <h4>A hidden command runs in the background</h4>
+        <p>What looked like a short "code" was actually a longer, hidden instruction. It runs out of sight, with no window you can see — so nothing looks like it went wrong.</p>
+        <span class="tag">Nothing looks wrong</span></div>
+
+      <div class="stage" data-s="4"><div class="sn">5</div>
+        <h4>Your computer contacts the attacker</h4>
+        <p>That hidden instruction quietly connects to the attacker's website and downloads the actual harmful program onto your machine.</p>
+        <span class="tag">Secret download</span></div>
+
+      <div class="stage" data-s="5"><div class="sn">6</div>
+        <h4>The harmful program takes over</h4>
+        <p>Now it can steal your passwords, read your files, or lock your computer for ransom — all while acting as if it were you. This can happen in seconds.</p>
+        <span class="tag">Real damage</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ RED FLAGS ============ -->
+<div class="flags">
+  <div class="flags-inner">
+    <h3>🚩 How to spot &amp; stop ClickFix</h3>
+    <div class="flag-grid">
+      <div class="flag"><b>A website asks you to press keys</b><p>No legitimate CAPTCHA or document ever needs Win+R, Ctrl+V and Enter. That is always an attack.</p></div>
+      <div class="flag"><b>"Paste this to verify / fix it"</b><p>Real verification happens in the page. Being told to paste something into Windows is the tell-tale sign.</p></div>
+      <div class="flag"><b>You didn't copy anything</b><p>If a page claims a "code" is ready on your clipboard that you never copied yourself, something put it there for you.</p></div>
+      <div class="flag"><b>Rushed, and a strange web address</b><p>Pressure to act fast, plus a look-alike address (extra words, odd spelling) — that's your cue to walk away.</p></div>
+    </div>
+    <div class="safe"><b>✅ If this happens to you:</b> Don't press any keys. Just close the tab. If you already pasted and pressed Enter, disconnect from wi-fi/network and call the Security team or Service Desk right away — telling someone early keeps the damage small. You will never be in trouble for reporting it.</div>
+  </div>
+</div>
+
+<footer class="foot">Sopra Steria — Security Awareness Training. This is a harmless simulation for educational use only; it executes no commands and contacts no servers.</footer>
+
+<script>
+  // The "command" shown is intentionally INERT — a labelled placeholder that does nothing.
+  const INERT_COMMAND = '[ hidden instruction ]  — SIMULATION ONLY, this does nothing.  "This was a ClickFix phishing test"';
+  const stages = [...document.querySelectorAll('.stage')];
+  const nodes  = [...document.querySelectorAll('.node')];
+  const chevs  = [...document.querySelectorAll('.chev')];
+  let autoTimers = [];
+
+  function litUpTo(n){
+    stages.forEach((s,i)=>{ s.classList.toggle('active',i===n); s.classList.toggle('done',i<n); });
+    nodes.forEach((nd,i)=> nd.classList.toggle('lit', i<=n));
+    // a chevron points to the step it leads into; show it once that step is reached,
+    // and keep only the newest one pulsing as the "we're moving forward" cue
+    chevs.forEach(c=>{ const t=+c.dataset.c; c.classList.toggle('lit', t<=n); });
+  }
+
+  function clickCaptcha(){
+    const spin=document.getElementById('spin');
+    spin.style.display='block';
+    document.getElementById('clbl').textContent='Verifying…';
+    litUpTo(0);
+    setTimeout(()=>{
+      spin.style.display='none';
+      document.getElementById('clbl').textContent='Verification failed';
+      document.getElementById('steps').classList.add('show');
+    },1100);
+  }
+
+  function fakeCopy(){
+    // Copy the clearly-inert placeholder so trainees can inspect it safely.
+    try{ navigator.clipboard && navigator.clipboard.writeText(INERT_COMMAND); }catch(e){}
+    document.getElementById('copied').classList.add('show');
+    document.getElementById('inertnote').textContent =
+      'On your clipboard now: '+INERT_COMMAND;
+    litUpTo(1);
+  }
+
+  // Type-out effect in the fake Run box
+  function typeRun(cb){
+    const dlg=document.getElementById('rundlg'); dlg.classList.add('show');
+    const el=document.getElementById('typed');
+    const text='[ hidden instruction that quietly downloads harmful software ]   ⟵ simulation only, does nothing';
+    el.textContent=''; let i=0;
+    const t=setInterval(()=>{
+      el.textContent=text.slice(0,++i);
+      if(i>=text.length){clearInterval(t); cb&&cb();}
+    },35);
+  }
+
+  function autoRun(){
+    resetSim();
+    const at=(fn,ms)=>autoTimers.push(setTimeout(fn,ms));
+    litUpTo(0);                                  // 1 fake page
+    at(()=>{ clickCaptcha(); },600);
+    at(()=>{ fakeCopy(); },2200);                // 2 hidden copy
+    at(()=>{ litUpTo(2); typeRun(); },3400);     // 3 you paste it
+    at(()=>{ litUpTo(3); },7000);                // 4 secret command
+    at(()=>{ litUpTo(4); },8600);                // 5 attacker's site
+    at(()=>{ litUpTo(5); },10200);               // 6 harm done
+  }
+
+  function resetSim(){
+    autoTimers.forEach(clearTimeout); autoTimers=[];
+    document.getElementById('steps').classList.remove('show');
+    document.getElementById('copied').classList.remove('show');
+    document.getElementById('rundlg').classList.remove('show');
+    document.getElementById('inertnote').textContent='';
+    document.getElementById('spin').style.display='none';
+    document.getElementById('clbl').textContent="I'm not a robot";
+    stages.forEach(s=>s.classList.remove('active','done'));
+    nodes.forEach(n=>n.classList.remove('lit'));
+    chevs.forEach(c=>c.classList.remove('lit'));
+  }
+
+  // clicking through manually also advances stages
+  litUpTo(-1);
+</script>
+</body>
+</html>
