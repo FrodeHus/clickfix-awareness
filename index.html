@@ -49,7 +49,7 @@
   .fake-url .dot{width:10px;height:10px;border-radius:50%;background:#c9c7cd}
   .fake-url .bar{flex:1;background:#fff;border-radius:6px;padding:5px 10px;color:#888;
     font-family:monospace;border:1px solid #ddd;display:flex;align-items:center;gap:6px}
-  .fake-url .bar .lock{color:var(--ss-red);font-weight:700}
+  .fake-url .bar .lock{font-size:10px}
   .fake-page{padding:34px 26px;text-align:center;min-height:300px}
   .fake-page h3{font-size:19px;margin-bottom:6px;color:#222}
   .fake-page p.muted{color:#777;font-size:13px;margin-bottom:22px}
@@ -274,7 +274,7 @@
       <div class="fake-browser">
         <div class="fake-url">
           <span class="dot"></span><span class="dot"></span><span class="dot"></span>
-          <span class="bar"><span class="lock">⚠</span> <span id="lureUrl"></span></span>
+          <span class="bar"><span class="lock">🔒</span> <span id="lureUrl"></span></span>
         </div>
         <div class="fake-page" id="lure"></div>
       </div>
@@ -446,6 +446,7 @@
       <div class="flag"><b>"Paste this to verify / fix it"</b><p>Real verification happens in the page. Being told to paste something into Windows is the tell-tale sign.</p></div>
       <div class="flag"><b>You didn't copy anything</b><p>If a page claims a "code" is ready on your clipboard that you never copied yourself, something put it there for you.</p></div>
       <div class="flag"><b>Rushed, and a strange web address</b><p>Pressure to act fast, plus a look-alike address (extra words, odd spelling). Walk away.</p></div>
+      <div class="flag"><b>The padlock proves nothing</b><p>Attackers get certificates for free, so fake pages show the padlock too. It only means nobody can eavesdrop on the connection, not that the site is honest. Judge the page by what it asks you to do.</p></div>
       <div class="flag"><b>"Verification" that runs commands</b><p>Real identity checks are an emailed code, an MFA prompt on your phone, or a normal sign-in page. None of them ever ask you to run something on your computer.</p></div>
       <div class="flag"><b>A shared file needs no "fix"</b><p>Documents from colleagues or partners just open. If one needs a repair step, a plug-in or a token pasted into Windows, it isn't a document.</p></div>
     </div>
@@ -470,7 +471,7 @@
   const VARIANTS = {
     captcha:{
       title:'The fake "verify you\'re human" page',
-      url:'http://verify-human-check<b style="color:#cf022b">-secure</b>.com/challenge',
+      url:'https://verify-human-check-secure.com/challenge',
       heading:'Verify you are human',
       sub:'Complete the action below to confirm you are not a robot and continue to the document.',
       captcha:true,
@@ -484,7 +485,7 @@
     },
     document:{
       title:'The fake "document won\'t open" page',
-      url:'http://secure-docs-viewer<b style="color:#cf022b">-online</b>.com/view?id=INV-8842',
+      url:'https://secure-docs-viewer-online.com/view?id=INV-8842',
       heading:'This document could not be displayed',
       sub:'“Invoice_8842.pdf” is protected. Repair the viewer to open it.',
       button:'🔧 Fix &amp; open document', pre:'<div class="doc-ghost"></div>',
@@ -498,7 +499,7 @@
     },
     filefix:{
       title:'The fake "open shared file" page (FileFix)',
-      url:'http://company-fileshare<b style="color:#cf022b">-secure</b>.com/shared/Q3-report',
+      url:'https://company-fileshare-secure.com/shared/Q3-report',
       heading:'A file has been shared with you',
       sub:'For security this file must be opened in File Explorer. Follow the steps to open “Q3-report.docx”.',
       button:'📂 Open in File Explorer',
@@ -512,7 +513,7 @@
     },
     shared:{
       title:'The fake "external partner shared a file" page',
-      url:'http://partner-secure-share<b style="color:#cf022b">-verify</b>.com/d/Q3-Budget',
+      url:'https://partner-secure-share-verify.com/d/Q3-Budget',
       heading:'Verify your identity to open this file',
       sub:'This file was shared from outside your organisation. For your protection, confirm your identity before the document opens.',
       pre:`<div class="share-card">
