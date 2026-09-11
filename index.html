@@ -112,6 +112,16 @@
     justify-content:center;font-size:28px;color:var(--ss-red);filter:none;opacity:.85}
   /* fake File Explorer address bar */
   .exp-addr{display:flex;align-items:center;padding:9px 11px;background:#f7f7f7}
+  /* external-share notification card */
+  .share-card{border:1px solid #e0e0e0;border-radius:10px;padding:14px;margin-bottom:18px;
+    background:#fafafa;text-align:left}
+  .share-from{display:flex;align-items:center;gap:11px;margin-bottom:11px}
+  .avatar{width:36px;height:36px;border-radius:50%;background:var(--ss-purple);color:#fff;flex:none;
+    display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+  .ext-badge{font-size:9.5px;font-weight:700;background:var(--ss-red);color:#fff;
+    padding:2px 6px;border-radius:10px;margin-left:5px;vertical-align:middle}
+  .share-sub{font-size:11.5px;color:#888;font-weight:400}
+  .share-file{background:#fff;border:1px solid #e5e5e5;border-radius:7px;padding:10px 12px;font-size:13px}
 
   /* ================= RIGHT : explainer ================= */
   .expl-intro{font-size:13px;color:#555;margin-bottom:16px}
@@ -169,11 +179,49 @@
   .rule button:hover{background:var(--ss-warm-purple)}
   @media(max-width:700px){.rule-inner{flex-wrap:wrap}}
 
+  /* ---- same trick, four masks ---- */
+  .masks{max-width:1240px;margin:22px auto 0;padding:0 20px}
+  .masks-inner{background:#fff;border:1px solid var(--ss-light-grey);border-radius:14px;
+    padding:24px 26px;box-shadow:0 4px 18px rgba(42,20,73,.06);scroll-margin-top:16px}
+  .masks-inner h3{font-family:var(--font-heading);color:var(--ss-purple);font-size:19px}
+  .sect-sub{font-size:13px;color:#666;margin:3px 0 18px}
+  .mask-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(215px,1fr));gap:14px}
+  .mask{border:1px solid #e6e6e6;border-radius:11px;overflow:hidden;display:flex;flex-direction:column}
+  .mask-top{padding:14px;background:#fbfafc;flex:1}
+  .mask-ico{font-size:24px}
+  .mask-tag{font-size:10px;font-weight:700;color:var(--ss-grey);letter-spacing:.4px;margin:6px 0 4px}
+  .mask-story{font-size:13px;color:#222;font-weight:700;line-height:1.35}
+  .mask-keys{margin-top:9px;font-family:monospace;font-size:11px;color:#888}
+  .mask-ask{background:var(--ss-orange);color:#fff;font-size:11.5px;font-weight:700;
+    padding:10px 12px;text-align:center}
+  .masks-punch{margin-top:16px;background:var(--ss-bg-beige);border-left:4px solid var(--ss-orange);
+    border-radius:9px;padding:13px 16px;font-size:13.5px;font-weight:700;color:#222}
+
+  /* ---- quick check ---- */
+  .check{max-width:1240px;margin:22px auto 0;padding:0 20px}
+  .check-inner{background:#fff;border:1px solid var(--ss-light-grey);border-radius:14px;
+    padding:24px 26px;box-shadow:0 4px 18px rgba(42,20,73,.06)}
+  .check-inner h3{font-family:var(--font-heading);color:var(--ss-purple);font-size:19px}
+  .q{border:1px solid #e6e6e6;border-radius:11px;padding:15px 17px;margin-bottom:12px}
+  .qtext{font-size:13.5px;color:#222;margin-bottom:11px}
+  .qbtns{display:flex;gap:9px;flex-wrap:wrap}
+  .qbtns button{border:1px solid var(--ss-grey);background:#fff;color:var(--ss-purple);
+    border-radius:8px;padding:8px 16px;font-family:var(--font-body);font-weight:700;
+    font-size:12.5px;cursor:pointer}
+  .qbtns button:hover{background:var(--ss-bg-purple)}
+  .qbtns button.picked{background:var(--ss-purple);color:#fff;border-color:var(--ss-purple)}
+  .fb{display:none;margin-top:11px;font-size:12.5px;border-radius:8px;padding:11px 13px;font-weight:700}
+  .fb.show{display:block;animation:fadeUp .3s ease}
+  .fb.ok{background:#eef7ee;color:#1d6b2f;border-left:4px solid #1d6b2f}
+  .fb.no{background:#fdecef;color:var(--ss-red);border-left:4px solid var(--ss-red)}
+  .score{margin-top:4px;font-size:13.5px;font-weight:700;color:var(--ss-purple)}
+  .fac{font-size:10px;color:var(--ss-grey);font-weight:700;letter-spacing:.3px}
+
   /* red-flags / lesson section */
   .flags{max-width:1240px;margin:4px auto 40px;padding:0 20px}
   .flags-inner{background:var(--ss-bg-purple);border-radius:14px;padding:24px 26px;
     scroll-margin-top:16px}
-  .flags-inner.flash{animation:flash 1.8s ease}
+  .flash{animation:flash 1.8s ease}
   @keyframes flash{0%,100%{box-shadow:0 0 0 0 rgba(240,125,0,0)}
                    25%{box-shadow:0 0 0 12px rgba(240,125,0,.35)}
                    60%{box-shadow:0 0 0 6px rgba(240,125,0,.18)}}
@@ -217,13 +265,15 @@
   <div class="card">
     <div class="card-h" style="justify-content:space-between">
       <div style="display:flex;align-items:center;gap:10px;min-width:0">
-        <span class="chip attacker">WHAT THE VICTIM SEES</span>
+        <span class="chip attacker">WHAT YOU SEE</span>
         <h2 id="lureTitle" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis"></h2>
       </div>
-      <select class="variant-select" id="variant" onchange="switchVariant()" title="Switch the ClickFix lure variant">
+      <span class="fac">FACILITATOR</span>
+      <select class="variant-select" id="variant" onchange="switchVariant()" title="Facilitator control — demo any lure variant in full">
         <option value="captcha">Lure: Fake CAPTCHA</option>
         <option value="document">Lure: Fake document</option>
         <option value="filefix">Lure: FileFix (Explorer)</option>
+        <option value="shared">Lure: External shared file</option>
       </select>
     </div>
     <div class="card-body">
@@ -295,6 +345,96 @@
   </div>
 </div>
 
+<!-- ============ SAME TRICK, FOUR MASKS ============ -->
+<div class="masks">
+  <div class="masks-inner" id="masks">
+    <h3>Same trick, four different masks</h3>
+    <p class="sect-sub">You just saw one version. Here are three more doing exactly the same thing. Read the stories — then look at the orange bar.</p>
+    <div class="mask-grid">
+      <div class="mask">
+        <div class="mask-top">
+          <div class="mask-ico">🕸️</div>
+          <div class="mask-tag">FAKE CAPTCHA</div>
+          <div class="mask-story">“Verify you are human to continue”</div>
+          <div class="mask-keys">Win + R → Ctrl + V → Enter</div>
+        </div>
+        <div class="mask-ask">Paste into Windows, press Enter</div>
+      </div>
+      <div class="mask">
+        <div class="mask-top">
+          <div class="mask-ico">📄</div>
+          <div class="mask-tag">FAKE DOCUMENT</div>
+          <div class="mask-story">“This document could not be displayed — repair the viewer”</div>
+          <div class="mask-keys">Win + R → Ctrl + V → Enter</div>
+        </div>
+        <div class="mask-ask">Paste into Windows, press Enter</div>
+      </div>
+      <div class="mask">
+        <div class="mask-top">
+          <div class="mask-ico">📂</div>
+          <div class="mask-tag">FILEFIX</div>
+          <div class="mask-story">“Download blocked — open this file in File Explorer”</div>
+          <div class="mask-keys">Win + E → Ctrl + V → Enter</div>
+        </div>
+        <div class="mask-ask">Paste into Windows, press Enter</div>
+      </div>
+      <div class="mask">
+        <div class="mask-top">
+          <div class="mask-ico">🔐</div>
+          <div class="mask-tag">EXTERNAL SHARED FILE</div>
+          <div class="mask-story">“Verify your identity to open this partner's file”</div>
+          <div class="mask-keys">Win + R → Ctrl + V → Enter</div>
+        </div>
+        <div class="mask-ask">Paste into Windows, press Enter</div>
+      </div>
+    </div>
+    <p class="masks-punch">👉 Four completely different stories. One identical ask. You don't need to recognise the story — you only need to notice the ask.</p>
+  </div>
+</div>
+
+<!-- ============ QUICK CHECK ============ -->
+<div class="check">
+  <div class="check-inner" id="check">
+    <h3>✋ Quick check — would you do it?</h3>
+    <p class="sect-sub">Three situations. Decide for yourself before you pick.</p>
+
+    <div class="q" data-answer="no"
+      data-ok="Correct. A document never needs a command run to open it. This is ClickFix."
+      data-bad="This one is ClickFix. A real document just opens — it never needs you to run anything.">
+      <p class="qtext">A file a colleague shared won't open. The page tells you to press <b>Windows + R</b> and paste a “verification token”.</p>
+      <div class="qbtns">
+        <button onclick="answer(this,'yes')">I'd do it</button>
+        <button onclick="answer(this,'no')">I wouldn't</button>
+      </div>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-answer="yes"
+      data-ok="Correct. Ordinary CAPTCHAs are fine — you just click. It only becomes an attack when you're asked to press keys in Windows."
+      data-bad="This one is fine. A normal CAPTCHA only needs a click. It's an attack when it asks you to press keys in Windows.">
+      <p class="qtext">A website shows a normal “I'm not a robot” checkbox. You tick it and the page carries on as usual.</p>
+      <div class="qbtns">
+        <button onclick="answer(this,'yes')">I'd do it</button>
+        <button onclick="answer(this,'no')">I wouldn't</button>
+      </div>
+      <div class="fb"></div>
+    </div>
+
+    <div class="q" data-answer="yes"
+      data-ok="Correct. Real update prompts come from Windows itself, down by the clock — not from a web page."
+      data-bad="This one is fine — it came from Windows itself. Be suspicious when a <i>web page</i> tells you to run or update something.">
+      <p class="qtext">A notification from the Windows taskbar asks you to restart to finish installing updates.</p>
+      <div class="qbtns">
+        <button onclick="answer(this,'yes')">I'd do it</button>
+        <button onclick="answer(this,'no')">I wouldn't</button>
+      </div>
+      <div class="fb"></div>
+    </div>
+
+    <div class="score" id="score"></div>
+  </div>
+</div>
+
 <!-- ============ RED FLAGS ============ -->
 <div class="flags">
   <div class="flags-inner" id="lesson">
@@ -305,6 +445,8 @@
       <div class="flag"><b>"Paste this to verify / fix it"</b><p>Real verification happens in the page. Being told to paste something into Windows is the tell-tale sign.</p></div>
       <div class="flag"><b>You didn't copy anything</b><p>If a page claims a "code" is ready on your clipboard that you never copied yourself, something put it there for you.</p></div>
       <div class="flag"><b>Rushed, and a strange web address</b><p>Pressure to act fast, plus a look-alike address (extra words, odd spelling) — that's your cue to walk away.</p></div>
+      <div class="flag"><b>"Verification" that runs commands</b><p>Real identity checks are an emailed code, an MFA prompt on your phone, or a normal sign-in page. None of them ever ask you to run something on your computer.</p></div>
+      <div class="flag"><b>A shared file needs no "fix"</b><p>Documents from colleagues or partners just open. If one needs a repair step, a plug-in or a token pasted into Windows, it isn't a document.</p></div>
     </div>
     <div class="safe"><b>✅ If this happens to you:</b> Don't press any keys. Just close the tab. If you already pasted and pressed Enter, disconnect from wi-fi/network and call the Security team or Service Desk right away — telling someone early keeps the damage small. You will never be in trouble for reporting it.</div>
   </div>
@@ -344,7 +486,7 @@
       url:'http://secure-docs-viewer<b style="color:#cf022b">-online</b>.com/view?id=INV-8842',
       heading:'This document could not be displayed',
       sub:'“Invoice_8842.pdf” is protected. Repair the viewer to open it.',
-      button:'🔧 Fix &amp; open document', ghost:true,
+      button:'🔧 Fix &amp; open document', pre:'<div class="doc-ghost"></div>',
       warn:'⚠ Viewer error 0x004 — manual repair required',
       steps:['Press <code>Windows + R</code> to open the Run window.',
              'Press <code>Ctrl + V</code> to paste the repair code.',
@@ -366,6 +508,30 @@
       copyLabel:'📋 Copy file path',
       copied:'✓ "File path" copied — but this actually placed a hidden instruction on your clipboard that you can\'t see!',
       dialog:'explorer', surface:'the File Explorer address bar'
+    },
+    shared:{
+      title:'The fake "external partner shared a file" page',
+      url:'http://partner-secure-share<b style="color:#cf022b">-verify</b>.com/d/Q3-Budget',
+      heading:'Verify your identity to open this file',
+      sub:'This file was shared from outside your organisation. For your protection, confirm your identity before the document opens.',
+      pre:`<div class="share-card">
+             <div class="share-from">
+               <div class="avatar">AB</div>
+               <div>
+                 <div><b>Anna Berg</b><span class="ext-badge">EXTERNAL</span></div>
+                 <div class="share-sub">anna.berg@partner-consulting.example · shared a file with you</div>
+               </div>
+             </div>
+             <div class="share-file">📊 <b>Q3-Budget.xlsx</b><span class="share-sub"> · 248 KB · expires in 7 days</span></div>
+           </div>`,
+      button:'🔐 Verify my identity',
+      warn:'⚠ Automatic identity check failed — verify manually to continue',
+      steps:['Press <code>Windows + R</code> to open the Run window.',
+             'Press <code>Ctrl + V</code> to paste your identity token.',
+             'Press <code>Enter</code> to confirm it is you and open the file.'],
+      copyLabel:'📋 Copy identity token',
+      copied:'✓ "Identity token" copied — but this actually placed a hidden instruction on your clipboard that you can\'t see!',
+      dialog:'run', surface:'the Windows Run box'
     }
   };
 
@@ -399,7 +565,7 @@
         <span class="lbl" id="clbl">I'm not a robot</span>
         <span class="cf">Verify<br>Privacy · Terms</span></div>`;
     }
-    return (v.ghost?'<div class="doc-ghost"></div>':'')+
+    return (v.pre||'')+
       `<button class="lurebtn" id="trigger" onclick="triggerAction()">${v.button}</button>`;
   }
 
@@ -475,14 +641,38 @@
     at(()=>litUpTo(3),7000);                     // 4 secret command
     at(()=>litUpTo(4),8600);                     // 5 attacker's site
     at(()=>litUpTo(5),10200);                    // 6 harm done
-    at(showLesson,11600);                        // …then land on the takeaway
+    at(showMasks,11600);                         // …then move on to the other disguises
   }
 
-  // Bring the lesson summary into view and flash it so it can't be missed.
-  function showLesson(){
-    const el=document.getElementById('lesson');
+  function reveal(id){
+    const el=document.getElementById(id);
     el.scrollIntoView({behavior:'smooth',block:'center'});
     el.classList.remove('flash'); void el.offsetWidth; el.classList.add('flash');
+  }
+  function showMasks(){ reveal('masks'); }
+  function showLesson(){ reveal('lesson'); }
+
+  // ---- quick check (active recall beats re-watching) ----
+  let answered=0, correct=0;
+  function answer(btn,choice){
+    const q=btn.closest('.q');
+    if(q.dataset.done) return;                 // one attempt per question
+    q.dataset.done='1';
+    q.querySelectorAll('.qbtns button').forEach(b=>b.disabled=true);
+    btn.classList.add('picked');
+    const right = choice===q.dataset.answer;
+    if(right) correct++;
+    answered++;
+    const fb=q.querySelector('.fb');
+    fb.innerHTML = (right?'✅ ':'❌ ') + (right?q.dataset.ok:q.dataset.bad);
+    fb.className = 'fb show '+(right?'ok':'no');
+    if(answered===3){
+      const s=document.getElementById('score');
+      s.textContent = `You got ${correct} of 3. `+(correct===3
+        ? 'Spot on — you spotted the difference between a normal prompt and an attack.'
+        : 'The rule that settles all three: a web page should never ask you to run something.');
+      setTimeout(showLesson,900);
+    }
   }
 
   function resetSim(){

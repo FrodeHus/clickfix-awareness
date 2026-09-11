@@ -6,15 +6,18 @@ An interactive, browser-based security-awareness exercise that teaches people to
 
 ## What is ClickFix?
 
-ClickFix is a social-engineering technique where a fake web page (often a "verify you're human" check or a "document won't open" error) convinces the victim to copy a hidden instruction and paste it into the Windows **Run** box themselves. Because the victim runs the command, no download warning appears and the usual browser protections are bypassed — leading to malware, data theft or ransomware.
+ClickFix is a social-engineering technique where a fake web page (often a "verify you're human" check or a "document won't open" error) convinces you to copy a hidden instruction and paste it into the Windows **Run** box yourself. Because you run the command, no download warning appears and the usual browser protections are bypassed — leading to malware, data theft or ransomware.
 
 ## What this page does
 
-The page shows the attack from two sides at once:
+The page walks a learner through four stages, in order:
 
-- **Left — what the victim sees:** a realistic fake "verify you're human" CAPTCHA that, once clicked, presents the classic ClickFix steps (Win+R → Ctrl+V → Enter).
-- **Right — what really happens:** a synced, animated six-step explainer written in plain, non-technical language, showing how the trick moves from fake page to full compromise.
-- A **"Play attack step-by-step"** button auto-runs the whole sequence for a facilitator, and a red-flags / how-to-respond section supports the debrief.
+1. **The walkthrough** — the attack from both sides at once. On the left, a realistic fake "verify you're human" page that presents the classic ClickFix steps (Win+R → Ctrl+V → Enter). On the right, a synced, animated six-step explainer in plain, non-technical language showing how the trick moves from fake page to full compromise. A **"Play attack step-by-step"** button auto-runs the whole sequence.
+2. **Same trick, four masks** — all four lure variants side by side (fake CAPTCHA, fake document, FileFix, external shared file). The cover stories differ wildly; the final ask is identical. This is the generalisation step: learners should recognise the *ask*, not memorise one page.
+3. **Quick check** — three "would you do it?" situations with instant feedback, including two that are perfectly safe, so the takeaway isn't simply "say no to everything".
+4. **The lesson** — red flags and what to do if it happens to you.
+
+A single takeaway banner sits at the top of the page, and a **FACILITATOR** dropdown in the walkthrough lets a trainer demo any of the four variants in full during a live session.
 
 ## Safety
 
